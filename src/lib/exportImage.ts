@@ -12,7 +12,7 @@
  *    the device's own ratio isn't enough for a file people will share.
  *  - `cacheBust: true` avoids stale embedded assets.
  */
-import { toPng, getFontEmbedCSS } from 'html-to-image'
+import { toBlob, toPng, toSvg, getFontEmbedCSS } from 'html-to-image'
 
 let cachedFontEmbedCSS: string | null = null
 
@@ -47,6 +47,38 @@ export async function exportPng(
 ): Promise<string> {
   const options = await prepare(node, pixelRatio)
   return toPng(node, options)
+}
+
+/** Render `node` to an SVG data URL (vector wrapper around the DOM). */
+export async function exportSvg(
+  node: HTMLElement,
+  { pixelRatio = 2 }: ExportOptions = {},
+): Promise<string> {
+  const options = await prepare(node, pixelRatio)
+  return toSvg(node, options)
+}
+
+/**
+ * Render `node` to a PNG and write it to the clipboard as an image.
+ * Must be called from a user gesture (button click / keyboard shortcut).
+ */
+export async function copyPngToClipboard(
+  node: HTMLElement,
+  { pixelRatio = 2 }: ExportOptions = {},
+): Promise<void> {
+  const options = await prepare(node, pixelRatio)
+  const blob = await toBlob(node, options)
+  if (!blob) throw new Error('Failed to render image for the clipboard')
+  await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+}
+
+/** Whether copying an image to the clipboard is supported in this browser. */
+export function isClipboardImageSupported(): boolean {
+  return (
+    typeof ClipboardItem !== 'undefined' &&
+    typeof navigator !== 'undefined' &&
+    !!navigator.clipboard?.write
+  )
 }
 
 /** A sensible, collision-free default filename. */
