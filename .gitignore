@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local Claude Code preview config (contains machine-specific paths)
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -2,6 +2,9 @@
 
 :root {
   color-scheme: dark;
+  /* Monospace stack for the rendered code. Phase 2 prepends a bundled,
+     ligature-capable font (JetBrains Mono) ahead of these fallbacks. */
+  --snap-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
 }
 
 html,
@@ -18,4 +21,57 @@ body {
     'Segoe UI',
     Roboto,
     sans-serif;
+}
+
+/* ---------------------------------------------------------------------------
+   Preview card — the exportable node and everything inside it.
+   These styles are deliberately plain in Phase 1; Phase 2 makes them premium.
+--------------------------------------------------------------------------- */
+
+.snap-preview {
+  display: inline-block;
+  /* `background` and `padding` are set inline from settings. */
+}
+
+.snap-window {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 12px 30px -8px rgba(0, 0, 0, 0.45),
+    0 4px 10px -4px rgba(0, 0, 0, 0.35);
+  min-width: 320px;
+}
+
+.snap-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.snap-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+}
+
+/* Shiki emits a <pre class="shiki"> carrying its own theme colors inline. */
+.snap-code .shiki {
+  margin: 0;
+  padding: 4px 20px 20px;
+  font-family: var(--snap-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  tab-size: 2;
+  /* The export captures the full node, so let it grow rather than scroll. */
+  overflow: visible;
+}
+
+/* When chrome is hidden, restore symmetric top padding on the code block. */
+.snap-window:not(:has(.snap-chrome)) .snap-code .shiki {
+  padding-top: 20px;
+}
+
+.snap-code .shiki code {
+  font-family: inherit;
 }
