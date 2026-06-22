@@ -3,6 +3,19 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "description": "Turn source code into beautiful, shareable images. Open-source, no-login, self-hostable — the answer to carbon.now.sh and ray.so.",
+  "license": "MIT",
+  "keywords": [
+    "code-to-image",
+    "syntax-highlighting",
+    "shiki",
+    "carbon",
+    "code-screenshot",
+    "png",
+    "svg",
+    "react",
+    "vite"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
