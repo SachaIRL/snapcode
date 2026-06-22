@@ -1,10 +1,12 @@
 @import 'tailwindcss';
+@import './fonts/fonts.css';
 
 :root {
   color-scheme: dark;
-  /* Monospace stack for the rendered code. Phase 2 prepends a bundled,
-     ligature-capable font (JetBrains Mono) ahead of these fallbacks. */
-  --snap-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  /* Self-hosted JetBrains Mono (with ligatures), then system fallbacks. */
+  --snap-mono:
+    'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas',
+    monospace;
 }
 
 html,
@@ -34,19 +36,38 @@ body {
 }
 
 .snap-window {
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
+  /* Layered shadow for a soft, premium drop. */
   box-shadow:
-    0 12px 30px -8px rgba(0, 0, 0, 0.45),
-    0 4px 10px -4px rgba(0, 0, 0, 0.35);
-  min-width: 320px;
+    0 30px 60px -12px rgba(0, 0, 0, 0.5),
+    0 18px 36px -18px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.25);
+  min-width: 340px;
+  /* Hairline edge so the card reads against any background. */
+  position: relative;
+}
+
+/* Theme-appropriate hairline border drawn on top of the window. */
+.snap-window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.snap-window[data-appearance='dark']::after {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.snap-window[data-appearance='light']::after {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .snap-chrome {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: 9px;
+  padding: 14px 18px 0;
 }
 
 .snap-dot {
@@ -58,20 +79,74 @@ body {
 /* Shiki emits a <pre class="shiki"> carrying its own theme colors inline. */
 .snap-code .shiki {
   margin: 0;
-  padding: 4px 20px 20px;
+  padding: 20px 22px 22px;
   font-family: var(--snap-mono);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.65;
   tab-size: 2;
+  /* Ligatures — the whole reason for JetBrains Mono (=> !== --> etc.). */
+  font-variant-ligatures: contextual;
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1;
+  -webkit-font-smoothing: antialiased;
   /* The export captures the full node, so let it grow rather than scroll. */
   overflow: visible;
 }
 
-/* When chrome is hidden, restore symmetric top padding on the code block. */
-.snap-window:not(:has(.snap-chrome)) .snap-code .shiki {
-  padding-top: 20px;
-}
-
 .snap-code .shiki code {
   font-family: inherit;
+  /* Keep code left-aligned even when the card is wider than the text. */
+  display: block;
+  width: fit-content;
+}
+
+/* ---------------------------------------------------------------------------
+   Control styling: range slider thumb + "no background" swatch.
+--------------------------------------------------------------------------- */
+
+.snap-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 2px solid var(--color-violet-500, #8b5cf6);
+  cursor: pointer;
+}
+
+.snap-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 2px solid var(--color-violet-500, #8b5cf6);
+  cursor: pointer;
+}
+
+/* Checkerboard to signal a transparent ("None") background. */
+.snap-swatch-none {
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #bbb 25%, transparent 25%),
+    linear-gradient(-45deg, #bbb 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #bbb 75%),
+    linear-gradient(-45deg, transparent 75%, #bbb 75%);
+  background-size: 10px 10px;
+  background-position:
+    0 0,
+    0 5px,
+    5px -5px,
+    -5px 0;
+}
+
+/* Subtle dotted stage so a transparent card is still visible behind it. */
+.snap-stage {
+  background-color: #0a0a0a;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
 }

@@ -8,6 +8,7 @@
  */
 import type { RefObject } from 'react'
 import { backgroundsById } from '../core/backgrounds'
+import { themesById } from '../core/themes'
 import type { SnapSettings } from '../core/types'
 
 interface PreviewCardProps {
@@ -25,6 +26,7 @@ export function PreviewCard({ html, settings, exportRef }: PreviewCardProps) {
   const background =
     backgroundsById.get(settings.background)?.css ?? 'transparent'
   const codeBackground = BG_COLOR_RE.exec(html)?.[1] ?? '#1e1e1e'
+  const appearance = themesById.get(settings.theme)?.appearance ?? 'dark'
 
   return (
     <div
@@ -33,7 +35,11 @@ export function PreviewCard({ html, settings, exportRef }: PreviewCardProps) {
       className="snap-preview"
       style={{ background, padding: settings.padding }}
     >
-      <div className="snap-window" style={{ background: codeBackground }}>
+      <div
+        className="snap-window"
+        data-appearance={appearance}
+        style={{ background: codeBackground }}
+      >
         {settings.showChrome && (
           <div className="snap-chrome">
             <span className="snap-dot" style={{ background: '#ff5f56' }} />

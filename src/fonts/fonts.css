@@ -1,0 +1,43 @@
+/*
+ * Self-hosted JetBrains Mono (latin subset, OFL-1.1).
+ *
+ * Bundling the woff2 files locally — rather than linking a CDN stylesheet — is
+ * what makes the image export reliable: html-to-image can only inline (and thus
+ * embed) fonts it can fetch same-origin. Cross-origin font CSS often can't be
+ * embedded, which is exactly how exported text silently falls back to a system
+ * font. See src/fonts/OFL.txt for the license.
+ *
+ * Vite fingerprints and bundles these url() references at build time.
+ */
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./jetbrains-mono-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./jetbrains-mono-400-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./jetbrains-mono-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./jetbrains-mono-700-italic.woff2') format('woff2');
+}
