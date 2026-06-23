@@ -6,6 +6,8 @@
 
 The open-source, no-login, self-hostable answer to carbon.now.sh and ray.so.
 
+🔗 **[Live demo → snapcode-hazel.vercel.app](https://snapcode-hazel.vercel.app)**
+
 ![License: MIT](https://img.shields.io/badge/license-MIT-violet)
 ![Shiki](https://img.shields.io/badge/highlighting-Shiki-ff7e5f)
 ![Vite](https://img.shields.io/badge/built%20with-Vite%20%2B%20React%20%2B%20TS-646cff)
@@ -69,7 +71,7 @@ two things get disproportionate care:
 ## Quick start
 
 ```bash
-git clone <your-fork-url> snapcode
+git clone https://github.com/SachaIRL/snapcode snapcode
 cd snapcode
 npm install
 npm run dev
